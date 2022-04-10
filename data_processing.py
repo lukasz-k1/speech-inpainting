@@ -3,7 +3,7 @@ import data_utils
 import os
 
 data_utils.get_data(source="url", folder_path="VCTK_data/")
-DATASET_PATH = 'VCTK_data/VCTK-Corpus/wav48'
+DATASET_PATH = 'VCTK_data/VCTK-Corpus/VCTK-Corpus/wav48'
 data_utils.preprocessing(DATASET_PATH)
 
 speakers_ID_list_train = [225, 227, 228, 229, 230, 231, 232, 233, 236,
