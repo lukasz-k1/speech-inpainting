@@ -1,10 +1,9 @@
+from zipfile import ZipFile
 import numpy as np
 import librosa
 import requests
-from zipfile import ZipFile
 import glob
 import signal_corruption
-import numpy as np
 import pathlib
 import soundfile
 import os
@@ -26,11 +25,11 @@ def get_data(folder_path, source="url"):
         zipObj.extractall()
 
 
-
 def normalize(x, dBFS_level=-26):
     scaling_factor = 10**(dBFS_level/20)
     return scaling_factor*x/(np.max(np.abs(x)))
-    
+
+
 def remove_silence(x, top_db=30):
     clip = librosa.effects.trim(x, top_db=top_db)
     return clip[0]
@@ -70,9 +69,7 @@ def preprocessing(DATASET_PATH):
 def extract_features(filepath):
 
     signal, fs = librosa.load(filepath, sr=None)
-    
     signal = librosa.effects.preemphasis(signal, coef=0.97)
-
     corrupted_signal = signal_corruption.corrupt_signal(signal)
 
     signal_mfcc = librosa.feature.mfcc(signal, fs, n_mfcc=32, lifter=0.6, n_fft=640, hop_length=320, fmin=20, fmax=8000, n_mels=128)
@@ -82,5 +79,3 @@ def extract_features(filepath):
     corrupted_signal_mfcc, corrupted_signal_stds, corrupted_signal_means = cmvn(corrupted_signal_mfcc)
 
     return signal_mfcc, signal_stds, signal_means, corrupted_signal_mfcc, corrupted_signal_stds, corrupted_signal_means
-
-
