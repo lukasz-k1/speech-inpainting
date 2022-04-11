@@ -8,8 +8,39 @@ Speech signals are often subject to interference, both in the time and frequency
 The data used to train the network is from [[2]](#2). For training purposes, a corruption algorithm was written to insert holes in the bandwidth of the speech signal to simulate the loss of signal information due to interference. The location and size of the holes were chosen randomly so that their overall proportion in the signal bandwidth is about 30%.
 
 ## Results
+
+STOI - Short-Time Objective Intelligibility - Correlation measure in the range <0, 1> - the higher the score, the more similar signals are
+
+PESQ - Perceptual Evaluation of Speech Quality - Measure used to assess the perceptual quality of a signal - the higher the score, the more similar signals are
+
+LSD - Log-Spectral Distance - Measure of the distance between spectrograms expressed in dB - the smaller the score, the more similar the signals are
+
+ Measure | STOI | PESQ | LSD
+ --- | --- | --- | --- 
+Predicted mean |	0.73 | 1.42 | 2.04
+Predicted stdev | 0.07 | 0.21 | 0.19
+Corrupted mean | 0.66 | 1.23 | 2.56
+Corrupted stdev | 0.09 | 0.11 | 0.27
+
+The network is definitely improving its performance, however it is still not at a satisfactory level.
+
 An example of how the algorithm works is presented below. 
 ![Spectrograms](./img/example_file_specs.png)
+
+## Conculsions
+Results are not as great as expected. In this case MFCC as features extraction method is bottleneck for our system. This is because MFCC extracts the most important information for speech analysis and by definition loses data. It is not possible to invert MFCC and receive listenable audio. If the system were trained on spectrograms (which requires more computing resources) compression (MFCC inversion) could be avoided and the results would be better.
+
+## Technologies
+- tensorflow
+- librosa
+- scipy
+- numpy
+- matplotlib
+- soundfile
+- pystoi
+- pesq
+- zipfile
+- requests
 
 ## References
 <a id="1">[1]</a>
